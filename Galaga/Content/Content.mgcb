@@ -14,9 +14,7 @@
 #---------------------------------- Content ---------------------------------#
 
 #begin galaga_atlas.json
-/importer:
-/processor:
-/build:galaga_atlas.json
+/copy:galaga_atlas.json
 
 #begin soundEffects/boss_damage.wav
 /importer:WavImporter
