@@ -20,6 +20,7 @@ namespace Galaga.Systems
                 var physicsComponent = EntityManager.GetComponent<Physics>(entity);
 
                 transformComponent.Position += physicsComponent.Velocity * deltaTime;
+                EntityManager.AddComponent(entity, transformComponent);
             }
         }
     }
