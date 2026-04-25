@@ -8,9 +8,10 @@ namespace Galaga.Components
     {
         public Texture2D Texture;
         public Rectangle SourceRectangle;
+        public SpriteEffects SpriteEffect;
         public Color Tint;
 
-        public int currentFrame, totalFrames;
+        public int CurrentFrame, TotalFrames;
         public float TimePerFrame, TimeElapsed;
     }
 }
