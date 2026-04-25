@@ -13,3 +13,164 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin galaga_atlas.json
+/importer:
+/processor:
+/build:galaga_atlas.json
+
+#begin soundEffects/boss_damage.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/boss_damage.wav
+
+#begin soundEffects/boss_destroy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/boss_destroy.wav
+
+#begin soundEffects/captured_ship_destroy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/captured_ship_destroy.wav
+
+#begin soundEffects/capturing.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/capturing.wav
+
+#begin soundEffects/challenging_stage_perfect.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/challenging_stage_perfect.wav
+
+#begin soundEffects/challenging_stage_results.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/challenging_stage_results.wav
+
+#begin soundEffects/challenging_stage_start.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/challenging_stage_start.wav
+
+#begin soundEffects/credit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/credit.wav
+
+#begin soundEffects/dive.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/dive.wav
+
+#begin soundEffects/explosion.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/explosion.wav
+
+#begin soundEffects/extend.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/extend.wav
+
+#begin soundEffects/fighter_captured.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/fighter_captured.wav
+
+#begin soundEffects/fighter_rescued.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/fighter_rescued.wav
+
+#begin soundEffects/fire.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/fire.wav
+
+#begin soundEffects/goei_destroy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/goei_destroy.wav
+
+#begin soundEffects/name_entry_top_end.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/name_entry_top_end.wav
+
+#begin soundEffects/name_entry_top_firstloop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/name_entry_top_firstloop.wav
+
+#begin soundEffects/name_entry_top_loop.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/name_entry_top_loop.wav
+
+#begin soundEffects/name_entry.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/name_entry.wav
+
+#begin soundEffects/stage_count.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/stage_count.wav
+
+#begin soundEffects/start.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/start.wav
+
+#begin soundEffects/tractor_beam.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/tractor_beam.wav
+
+#begin soundEffects/transform.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/transform.wav
+
+#begin soundEffects/zako_destroy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:soundEffects/zako_destroy.wav
+
+#begin spritesGalaga.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:spritesGalaga.png
+
