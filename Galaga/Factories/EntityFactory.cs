@@ -22,11 +22,12 @@ namespace Galaga.Factories
             });
 
             var sprite = spriteAtlas.GetSprite("Nave");
+            var spriteWidth = sprite.SourceRectangle.Width;
 
             var offset = new Vector2(1, 1);
             var collider = new Collider
             {
-                Width = (int)(sprite.SourceRectangle.Width - (offset.X * 2)),
+                Width = (int)(spriteWidth - (offset.X * 2)),
                 Height = (int)(sprite.SourceRectangle.Height - (offset.Y * 2)),
                 Offset = offset
             };
@@ -36,7 +37,11 @@ namespace Galaga.Factories
             entityManager.AddComponent(player, collider);
             entityManager.AddComponent(player, new Health { Max = 3, Current = 3 });
             entityManager.AddComponent(player, new Physics());
-            entityManager.AddComponent(player, new Weapon{CoolDown = 0.5f, FireRate = 0.5f});
+
+            var spawnOffset = new Vector2(spriteWidth / 2, 0);
+            entityManager.AddComponent(player, new Weapon{
+                CoolDown = 0.5f, FireRate = 0.5f, SpawnOffset = spawnOffset
+            });
 
             return player;
         }
