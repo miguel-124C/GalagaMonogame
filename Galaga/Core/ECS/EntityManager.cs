@@ -9,10 +9,14 @@ namespace Galaga.Core.ECS
     {
         private Entity nextEntityId = 0;
         private readonly Dictionary<Entity, Dictionary<Type, IComponent>> _entities = [];
-        
+        private readonly Queue<uint> _recycledIds = [];
+
         public Entity CreateEntity()
         {
-            var entity = nextEntityId++;
+            var entity = (_recycledIds.Count > 0)
+                ? _recycledIds.Dequeue()
+                : nextEntityId++;
+
             _entities[entity] = [];
             return entity;
         }
@@ -20,6 +24,15 @@ namespace Galaga.Core.ECS
         public void AddComponent<T>(Entity entity, T component) where T : IComponent
         {
             _entities[entity][typeof(T)] = component;
+        }
+
+        public void DestroyEntity(Entity id)
+        {
+            if (!_entities.TryGetValue(id, out var components)) return;
+
+            components.Clear();
+            _entities.Remove(id);
+            _recycledIds.Enqueue(id);
         }
 
         public T GetComponent<T>(Entity entity) where T : IComponent
