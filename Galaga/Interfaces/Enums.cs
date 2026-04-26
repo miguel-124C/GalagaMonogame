@@ -4,4 +4,9 @@
     {
         PlayerBullet, EnemyBullet
     }
+
+    public enum EnemyState
+    {
+        Entering, InFormation, Diving
+    }
 }
