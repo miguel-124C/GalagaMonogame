@@ -6,7 +6,7 @@ using Galaga.Interfaces;
 
 namespace Galaga.Managers
 {
-    internal class BulletManager
+    public class BulletManager
     {
         private readonly BulletFactory _bulletFactory;
 
@@ -14,6 +14,7 @@ namespace Galaga.Managers
         {
             _bulletFactory = bulletFactory;
             EventManager.OnPlayerShoot += HandlePlayerShoot;
+            EventManager.OnEnemyShoot += HandleEnemyShoot;
         }
 
         private void HandlePlayerShoot(Vector2 position)
