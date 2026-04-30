@@ -21,18 +21,25 @@ namespace Galaga.Systems
                 if (!EntityManager.HasComponent<Transform>(entity))
                     continue;
 
-                var spriteComponent = EntityManager.GetComponent<Sprite>(entity);
-                var transformComponent = EntityManager.GetComponent<Transform>(entity);
-                
+                var sprite = EntityManager.GetComponent<Sprite>(entity);
+                var transform = EntityManager.GetComponent<Transform>(entity);
+
+                var spriteWidth = sprite.SourceRectangle.Width;
+
+                var curretFrame = sprite.CurrentFrame;
+                var gap = sprite.GapPerFrame;
+
+                sprite.SourceRectangle.X += (int)(curretFrame * (spriteWidth + gap));
+
                 _spriteBatch.Draw(
-                    spriteComponent.Texture,
-                    transformComponent.Position,
-                    spriteComponent.SourceRectangle,
+                    sprite.Texture,
+                    transform.Position,
+                    sprite.SourceRectangle,
                     Color.White,
-                    transformComponent.Rotation,
+                    transform.Rotation,
                     Vector2.Zero,
-                    transformComponent.Scale,
-                    spriteComponent.SpriteEffect,
+                    transform.Scale,
+                    sprite.SpriteEffect,
                     0f
                 );
             }

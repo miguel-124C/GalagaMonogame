@@ -14,13 +14,13 @@ namespace Galaga.Managers
         private readonly ContentManager contentManager = cm;
         private readonly string jsonPath = pathJson;
 
-        public Dictionary<string, Sprite> Sprites { get; private set; } = [];
+        private readonly Dictionary<string, Sprite> Sprites = [];
 
         public void LoadJson()
         {
             string json = File.ReadAllText(jsonPath);
             var spriteAtlas = JsonSerializer.Deserialize<SpriteAtlasJson>(json);
-            
+
             var texture = contentManager.Load<Texture2D>(spriteAtlas.TexturePath);
 
             var sprites = spriteAtlas.Sprites;
@@ -33,7 +33,8 @@ namespace Galaga.Managers
                     TotalFrames = (int)sprite.TotalFrames,
                     CurrentFrame = 0,
                     SpriteEffect = SpriteEffects.None,
-                    TimeElapsed = 0f
+                    TimeElapsed = 0f,
+                    GapPerFrame = spriteAtlas.Gap
                 };
             }
         }

@@ -9,7 +9,7 @@ namespace Galaga.Interfaces
         public string TexturePath { get; set; }
 
         [JsonPropertyName("gap")]
-        public long Gap { get; set; }
+        public float Gap { get; set; }
 
         [JsonPropertyName("sprites")]
         public Sprites[] Sprites { get; set; }
