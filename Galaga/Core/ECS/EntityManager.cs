@@ -26,6 +26,11 @@ namespace Galaga.Core.ECS
             _entities[entity][typeof(T)] = component;
         }
 
+        public void RemoveComponent<T>(Entity entity) where T : IComponent
+        {
+            _entities[entity].Remove(typeof(T));
+        }
+
         public void DestroyEntity(Entity id)
         {
             if (!_entities.TryGetValue(id, out var components)) return;
