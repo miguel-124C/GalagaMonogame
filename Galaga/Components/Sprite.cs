@@ -12,6 +12,6 @@ namespace Galaga.Components
         public Color Tint;
 
         public int CurrentFrame, TotalFrames;
-        public float TimePerFrame, TimeElapsed;
+        public float TimePerFrame, TimeElapsed, GapPerFrame;
     }
 }
