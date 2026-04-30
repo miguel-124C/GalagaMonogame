@@ -81,7 +81,7 @@ namespace Galaga.Systems
         {
             var currentState = Keyboard.GetState();
 
-            if (currentState.IsKeyDown(Keys.Space))
+            if (currentState.IsKeyDown(Keys.X))
             {
                 weapon.CoolDown -= deltaTime;
 
@@ -91,9 +91,9 @@ namespace Galaga.Systems
                     weapon.CoolDown = weapon.FireRate;
                     EventManager.TriggerPlayerShoot(spawnPosition);
                 }
-
-                EntityManager.AddComponent(entity, weapon);
             }
+
+            EntityManager.AddComponent(entity, weapon);
         }
     }
 }
