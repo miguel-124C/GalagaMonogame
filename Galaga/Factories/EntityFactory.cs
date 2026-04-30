@@ -14,21 +14,23 @@ namespace Galaga.Factories
         {
             var player = entityManager.CreateEntity();
 
-            entityManager.AddComponent(player, new Transform
+            var transform = new Transform
             {
                 Position = position,
                 Rotation = 0f,
-                Scale = new Vector2(1f, 1f)
-            });
+                Scale = new Vector2(3f, 3f)
+            };
+            entityManager.AddComponent(player, transform);
 
             var sprite = spriteAtlas.GetSprite("Nave");
-            var spriteWidth = sprite.SourceRectangle.Width;
+            var spriteWidth = sprite.SourceRectangle.Width * transform.Scale.X;
+            var spriteHeight = sprite.SourceRectangle.Height * transform.Scale.Y;
 
-            var offset = new Vector2(1, 1);
+            var offset = new Vector2(1, 1) * transform.Scale;
             var collider = new Collider
             {
-                Width = (int)(spriteWidth - (offset.X * 2)),
-                Height = (int)(sprite.SourceRectangle.Height - (offset.Y * 2)),
+                Width = (int)((spriteWidth) - (offset.X * 2)),
+                Height = (int)((spriteHeight) - (offset.Y * 2)),
                 Offset = offset
             };
 
@@ -40,7 +42,7 @@ namespace Galaga.Factories
 
             var spawnOffset = new Vector2(spriteWidth / 2, 0);
             entityManager.AddComponent(player, new Weapon{
-                CoolDown = 0.5f, FireRate = 0.5f, SpawnOffset = spawnOffset
+                CoolDown = 0f, FireRate = 0.5f, SpawnOffset = spawnOffset
             });
 
             return player;
