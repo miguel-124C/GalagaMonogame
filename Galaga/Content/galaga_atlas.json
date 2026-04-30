@@ -1,5 +1,5 @@
 {
-  "texturePath": "spritesGalaga.png",
+  "texturePath": "spritesGalaga",
   "gap": 2,
   "sprites": [
     {
@@ -137,6 +137,22 @@
       "w": 16,
       "h": 16,
       "totalFrames": 1
+    },
+    {
+      "name": "Player_Explosion",
+      "x": 145,
+      "y": 1,
+      "w": 32,
+      "h": 32,
+      "totalFrames": 4
+    },
+    {
+      "name": "Enemy_Explosion",
+      "x": 289,
+      "y": 1,
+      "w": 32,
+      "h": 32,
+      "totalFrames": 5
     }
   ]
 }
