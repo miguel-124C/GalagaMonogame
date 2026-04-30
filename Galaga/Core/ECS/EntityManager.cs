@@ -55,5 +55,7 @@ namespace Galaga.Core.ECS
             return _entities.Where(e => e.Value.ContainsKey(typeof(T)))
                 .Select(e => e.Key);
         }
+
+        // TODO: Create method GetEntitiesWith<T,U,V>
     }
 }

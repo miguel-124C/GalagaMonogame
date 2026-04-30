@@ -14,6 +14,10 @@ namespace Galaga.Systems
             var spriteEntities = EntityManager.GetEntitiesWith<Sprite>();
             if (!spriteEntities.Any()) return;
 
+            // Esto se ponia cuando el fondo era negro... se ponia esto para que no
+            // se vean bordes grises... pero quitando el fondo negro y pasandolo a
+            // transparente se quitó
+            //_spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
             _spriteBatch.Begin();
 
             foreach (var entity in spriteEntities)
