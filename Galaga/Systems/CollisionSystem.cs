@@ -1,5 +1,6 @@
 ﻿using Galaga.Components;
 using Galaga.Core.ECS;
+using Galaga.Core.Events;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -9,37 +10,31 @@ namespace Galaga.Systems
 {
     public class CollisionSystem : ISystem
     {
-        public static event Action<uint, uint> OnPlayerBulletHitEnemy;
-        public static event Action<uint, uint> OnEnemyBulletHitPlayer;
-        public static event Action<uint, uint> OnEnemyHitPlayer;
-
         public override void Update(float deltaTime)
         {
-            var colliderEntities = EntityManager.GetEntitiesWith<Collider>();
-            if (!colliderEntities.Any())
-                return;
+            var players = EntityManager.GetEntitiesWith<Player>();
+            var playerBullets = EntityManager.GetEntitiesWith<PlayerBullet>();
+            var enemies = EntityManager.GetEntitiesWith<Enemy>();
+            var enemyBullets = EntityManager.GetEntitiesWith<EnemyBullet>();
 
-            foreach (var entity in colliderEntities)
-            {
-                if (!EntityManager.HasComponent<Transform>(entity))
-                    continue;
+            var playerEntities = players.Where(HasColliderAndTransform);
+            var playerBulletEntities = playerBullets.Where(HasColliderAndTransform);
+            var enemyEntities = enemies.Where(HasColliderAndTransform);
+            var enemyBulletEntities = enemyBullets.Where(HasColliderAndTransform);
 
-                var playerEntities = EntityManager.GetEntitiesWith<Player>();
-                var playerBulletEntities = EntityManager.GetEntitiesWith<PlayerBullet>();
-                var enemyEntities = EntityManager.GetEntitiesWith<Enemy>();
-                var enemyBulletEntities = EntityManager.GetEntitiesWith<EnemyBullet>();
+            if (playerBulletEntities.Any() && enemyEntities.Any())
+                CheckCollision(playerBulletEntities, enemyEntities, EventManager.TriggerPlayerHitEnemy);
 
-                CheckCollision(playerBulletEntities, enemyEntities, OnPlayerBulletHitEnemy);
-                CheckCollision(enemyBulletEntities, playerEntities, OnEnemyBulletHitPlayer);
-                CheckCollision(enemyEntities, playerEntities, OnEnemyHitPlayer);
-            }
+            if (enemyBulletEntities.Any() && playerEntities.Any())
+                CheckCollision(enemyBulletEntities, playerEntities, EventManager.TriggerEnemyHitPlayer);
+
+            if (enemyEntities.Any() && playerEntities.Any())
+                CheckCollision(enemyEntities, playerEntities, EventManager.TriggerEnemyDestroyPlayer);
         }
 
         private void CheckCollision
             (IEnumerable<uint> entityA, IEnumerable<uint> entityB, Action<uint, uint> onCollision)
         {
-            if (!entityA.Any() || !entityB.Any()) return;
-
             foreach (var a in entityA)
             {
                 var rectA = GetRectEntity(a);
@@ -49,7 +44,7 @@ namespace Galaga.Systems
                     var rectB = GetRectEntity(b);
                     
                     if (rectA.Intersects(rectB))
-                        onCollision?.Invoke(a, b);
+                        onCollision(a, b);
                 }
             }
         }
@@ -64,6 +59,12 @@ namespace Galaga.Systems
                 (int)(transform.Position.Y + collider.Offset.Y),
                 collider.Width, collider.Height
             );
+        }
+
+        private bool HasColliderAndTransform(uint entity)
+        {
+            return EntityManager.HasComponent<Transform>(entity) &&
+                EntityManager.HasComponent<Collider>(entity);
         }
     }
 }
