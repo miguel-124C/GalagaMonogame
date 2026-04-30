@@ -9,4 +9,9 @@
     {
         Entering, InFormation, Diving
     }
+
+    public enum EnemyDirection
+    {
+        Left, Right
+    }
 }
