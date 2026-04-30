@@ -16,6 +16,7 @@ namespace Galaga.Factories
             var boos = AssembleBaseEnemy(positionInitial, pointsControl, "Enemy_Boos_Green_Fly");
             entityManager.AddComponent(boos, new Boos());
             entityManager.AddComponent(boos, new Health { Max = 2, Current = 2 });
+            entityManager.AddComponent(boos, new ScoreValue { Value = 150 });
 
             return boos;
         }
@@ -25,6 +26,7 @@ namespace Galaga.Factories
             var bee = AssembleBaseEnemy(position, pointsControl, "Enemy_Bee_Fly");
             entityManager.AddComponent(bee, new Bee());
             entityManager.AddComponent(bee, new Health { Max = 1, Current = 1 });
+            entityManager.AddComponent(bee, new ScoreValue { Value = 50 });
 
             return bee;
         }
@@ -34,6 +36,7 @@ namespace Galaga.Factories
             var butterfly = AssembleBaseEnemy(position, pointsControl, "Enemy_Butterfly_Fly");
             entityManager.AddComponent(butterfly, new Butterfly());
             entityManager.AddComponent(butterfly, new Health { Max = 1, Current = 1 });
+            entityManager.AddComponent(butterfly, new ScoreValue { Value = 80 });
 
             return butterfly;
         }
