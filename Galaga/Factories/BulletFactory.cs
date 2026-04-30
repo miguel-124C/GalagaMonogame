@@ -15,10 +15,6 @@ namespace Galaga.Factories
         {
             var isPlayerBullet = bulletType == BulletType.PlayerBullet;
 
-            IComponent tagComponent = (isPlayerBullet)
-                ? new PlayerBullet()
-                : new EnemyBullet();
-
             string spriteName = (isPlayerBullet)
                 ? "Player_Bullet"
                 : "Enemy_Bullet";
@@ -44,8 +40,14 @@ namespace Galaga.Factories
                 Rotation = 0f,
                 Scale = scale
             };
+
             entityManager.AddComponent(bullet, transform);
-            entityManager.AddComponent(bullet, tagComponent);
+            entityManager.AddComponent(bullet, new Bullet());
+
+            if (isPlayerBullet)
+                entityManager.AddComponent(bullet, new PlayerBullet());
+            else
+                entityManager.AddComponent(bullet, new EnemyBullet());
 
             var offset = new Vector2(6, 4) * scale;
             var collider = new Collider
