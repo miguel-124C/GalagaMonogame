@@ -110,10 +110,20 @@ namespace Galaga.Systems
             var sprite = EntityManager.GetComponent<Sprite>(enemy);
             var spriteWidth = sprite.SourceRectangle.Width * transform.Scale.X;
             var swarmData = EntityManager.GetComponent<SwarmData>(enemy);
+
             if (transform.Position.X <= 0)
                 swarmData.Direction = EnemyDirection.Right;
             else if (transform.Position.X + spriteWidth >= screenWidth)
                 swarmData.Direction = EnemyDirection.Left;
+
+            var swarm = EntityManager.GetEntitiesWith<SwarmData>();
+            foreach (var item in swarm)
+            {
+                EntityManager.AddComponent(item, new SwarmData
+                {
+                    Direction = swarmData.Direction
+                });
+            }
 
             EntityManager.AddComponent(enemy, swarmData);
         }

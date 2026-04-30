@@ -36,12 +36,16 @@ namespace Galaga
             _spriteAtlas = new SpriteAtlas(Content, "Content/galaga_atlas.json");
 
             _systemsManager.RegisterSystem(new PlayerControlSystem(_graphics));
-            _systemsManager.RegisterSystem(new MovementSystem());
             _systemsManager.RegisterSystem(new EnemyAISystem(_graphics));
+            _systemsManager.RegisterSystem(new MovementSystem());
             _systemsManager.RegisterSystem(new CollisionSystem());
+            _systemsManager.RegisterSystem(new BulletSystem(_graphics));
+            _systemsManager.RegisterSystem(new AnimationSystem());
+            _systemsManager.RegisterSystem(new DeathSystem(_spriteAtlas));
 
             var bulletFactory = new BulletFactory(_entityManager, _spriteAtlas);
             _ = new BulletManager(bulletFactory);
+            _ = new HitsManager(_entityManager);
 
             base.Initialize();
         }
