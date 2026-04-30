@@ -7,72 +7,93 @@ using System.Linq;
 
 namespace Galaga.Systems
 {
-    public class PlayerControlSystem(EntityManager em, GraphicsDeviceManager gdm)
+    public class PlayerControlSystem(GraphicsDeviceManager gdm)
         : ISystem
     {
-        private readonly EntityManager _entityManager = em;
         private readonly int WidthScreen = gdm.PreferredBackBufferWidth;
-
-        private KeyboardState _currentKeyboardState = Keyboard.GetState();
-        private KeyboardState _previousKeyboardState = Keyboard.GetState();
+        private bool IsHitWallLeft = false;
+        private bool IsHitWallRight = false;
 
         public override void Update(float deltaTime)
         {
-            var player = _entityManager.GetEntitiesWith<Player>().FirstOrDefault();
+            var player = EntityManager.GetEntitiesWith<Player>().FirstOrDefault();
 
-            var hasPhysics = _entityManager.HasComponent<Physics>(player);
-            var hasWeapon = _entityManager.HasComponent<Weapon>(player);
-            var hasTransform = _entityManager.HasComponent<Transform>(player);
+            var hasPhysics = EntityManager.HasComponent<Physics>(player);
+            var hasWeapon = EntityManager.HasComponent<Weapon>(player);
+            var hasTransform = EntityManager.HasComponent<Transform>(player);
             if (!hasPhysics || !hasWeapon || !hasTransform) return;
 
-            var physics = _entityManager.GetComponent<Physics>(player);
-            var weapon = _entityManager.GetComponent<Weapon>(player);
-            var transform = _entityManager.GetComponent<Transform>(player);
+            var physics = EntityManager.GetComponent<Physics>(player);
+            var weapon = EntityManager.GetComponent<Weapon>(player);
+            var transform = EntityManager.GetComponent<Transform>(player);
+            var sprite = EntityManager.GetComponent<Sprite>(player);
+            var spriteWidth = sprite.SourceRectangle.Width * transform.Scale.X;
 
             if (transform.Position.X <= 0)
+            {
                 transform.Position.X = 0;
+                IsHitWallLeft = true;
+                EntityManager.AddComponent(player, transform);
+            }
+            else if (transform.Position.X + spriteWidth >= WidthScreen)
+            {
+                transform.Position.X = WidthScreen - spriteWidth;
+                IsHitWallRight = true;
+                EntityManager.AddComponent(player, transform);
+            }
+            else
+            {
+                IsHitWallLeft = false;
+                IsHitWallRight = false;
+            }
 
-            if (transform.Position.X >= WidthScreen)
-                transform.Position.X = WidthScreen;
-
-            _currentKeyboardState = Keyboard.GetState();
-            InputMove(physics);
+            InputMove(player, physics);
             InputShoot(deltaTime, player, weapon, transform);
-
-            _previousKeyboardState = _currentKeyboardState;
         }
 
-        private void InputMove(Physics physics)
+        private void InputMove(uint entity, Physics physics)
         {
-            if (IsKeyPressed(Keys.Left, _currentKeyboardState))
-                physics.Velocity.X = -200;
-            else if (IsKeyPressed(Keys.Right, _currentKeyboardState))
-                physics.Velocity.X = 200;
-            else if (_currentKeyboardState.IsKeyUp(Keys.Right)
-                || _currentKeyboardState.IsKeyUp(Keys.Left))
+            var currentState = Keyboard.GetState();
+            var isMovingHorizontal = currentState.IsKeyDown(Keys.Left)
+                || currentState.IsKeyDown(Keys.Right);
+
+            if (isMovingHorizontal)
+            {
+                if (currentState.IsKeyDown(Keys.Left))
+                {
+                    physics.Velocity.X = IsHitWallLeft ? 0 : -200;
+                }
+                else
+                {
+                    physics.Velocity.X = IsHitWallRight ? 0 : 200;
+                }
+            }
+            else if (currentState.IsKeyUp(Keys.Right)
+                || currentState.IsKeyUp(Keys.Left))
                 physics.Velocity.X = 0;
+
+            EntityManager.AddComponent(entity, physics);
         }
 
         private void InputShoot(
             float deltaTime, uint entity, Weapon weapon, Transform transform
         )
         {
-            if (IsKeyPressed(Keys.Space, _currentKeyboardState))
+            var currentState = Keyboard.GetState();
+
+            if (currentState.IsKeyDown(Keys.Space))
             {
                 weapon.CoolDown -= deltaTime;
-                _entityManager.AddComponent(entity, weapon);
-
-                var spawnPosition = transform.Position + weapon.SpawnOffset;
 
                 if (weapon.CoolDown <= 0)
                 {
+                    var spawnPosition = transform.Position + weapon.SpawnOffset;
                     weapon.CoolDown = weapon.FireRate;
                     EventManager.TriggerPlayerShoot(spawnPosition);
                 }
+
+                EntityManager.AddComponent(entity, weapon);
             }
         }
-
-        private bool IsKeyPressed(Keys key, KeyboardState currentState)
-            => currentState.IsKeyDown(key) && _previousKeyboardState.IsKeyUp(key);
     }
 }
