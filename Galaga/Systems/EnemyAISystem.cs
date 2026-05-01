@@ -11,9 +11,6 @@ namespace Galaga.Systems
     {
         private readonly float screenWidth = gdm.PreferredBackBufferWidth;
 
-        private readonly int[] framesInPosition = [6, 7];
-        private int indexFrameInPosition = 0;
-
         public override void Update(float deltaTime)
         {
             var enemies = EntityManager.GetEntitiesWith<Enemy>();
@@ -63,22 +60,12 @@ namespace Galaga.Systems
             (uint enemy, Transform transform, float deltaTime)
         {
             var swarmData = EntityManager.GetComponent<SwarmData>(enemy);
-            var sprite = EntityManager.GetComponent<Sprite>(enemy);
-            
-            sprite.TimeElapsed += deltaTime;
-            if (sprite.TimeElapsed >= sprite.TimePerFrame)
-            {
-                sprite.CurrentFrame = framesInPosition[indexFrameInPosition];
-                indexFrameInPosition = (indexFrameInPosition + 1) % framesInPosition.Length;
-                sprite.TimeElapsed = 0;
-            }
 
             transform.Position.X = (swarmData.Direction == EnemyDirection.Right)
                 ? transform.Position.X + 50 * deltaTime
                 : transform.Position.X - 50 * deltaTime;
             
             EntityManager.AddComponent(enemy, transform);
-            EntityManager.AddComponent(enemy, sprite);
         }
 
         private void HandleDivingState
