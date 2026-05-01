@@ -16,6 +16,7 @@ namespace Galaga
         private EntityManager _entityManager;
         private SpriteAtlas _spriteAtlas;
         private readonly SystemsManager _systemsManager;
+        private readonly AudioManager _audioManager;
 
         private RenderSystem _renderSystem;
 
@@ -28,6 +29,7 @@ namespace Galaga
             _graphics.PreferredBackBufferWidth = 1024;   // Ancho
             _graphics.PreferredBackBufferHeight = 768;   // Alto
             _systemsManager = new SystemsManager();
+            _audioManager = new AudioManager("soundEffects");
         }
 
         protected override void Initialize()
@@ -58,6 +60,7 @@ namespace Galaga
             _systemsManager.InitializeSystems(_entityManager);
 
             _spriteAtlas.LoadJson();
+            _audioManager.LoadSounds(Content);
 
             EntityFactory ef = new(_entityManager, _spriteAtlas);
             ef.CreatePlayer(new Vector2(400, 700));
