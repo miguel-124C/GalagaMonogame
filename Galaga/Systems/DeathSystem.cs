@@ -53,15 +53,22 @@ namespace Galaga.Systems
         {
             foreach (var entity in entityExplosions)
             {
+                var sprite = _spriteAtlas.GetSprite(entity.Value);
+                sprite.TimePerFrame = 0.25f;
+
                 var transformEntity = EntityManager.GetComponent<Transform>(entity.Key);
+                var spriteEntity = EntityManager.GetComponent<Sprite>(entity.Key);
+                var spriteEntityWidth = spriteEntity.SourceRectangle.Width * transformEntity.Scale.X;
+                var spriteEntityHeight = spriteEntity.SourceRectangle.Height * transformEntity.Scale.Y;
+
                 var transformExplosion = new Transform
                 {
-                    Position = transformEntity.Position,
+                    Position = new Vector2(
+                        transformEntity.Position.X - (spriteEntityWidth / 2),
+                        transformEntity.Position.Y - (spriteEntityHeight / 2)
+                    ),
                     Scale = new Vector2(3, 3)
                 };
-
-                var sprite = _spriteAtlas.GetSprite(entity.Value);
-                sprite.TimePerFrame = 0.15f;
 
                 var explosion = EntityManager.CreateEntity();
                 EntityManager.AddComponent(explosion, transformExplosion);
