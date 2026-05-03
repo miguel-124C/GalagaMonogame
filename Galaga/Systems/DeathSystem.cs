@@ -11,6 +11,7 @@ namespace Galaga.Systems
     {
         private readonly SpriteAtlas _spriteAtlas = spriteAtlas;
         private readonly Dictionary<uint, string> entityExplosions = [];
+        private readonly List<uint> entityDeath = [];
         public override void Update(float deltaTime)
         {
             var healths = EntityManager.GetEntitiesWith<Health>();
@@ -20,16 +21,9 @@ namespace Galaga.Systems
                 var health = EntityManager.GetComponent<Health>(entity);
                 if (health.Current <= 0)
                 {
+                    // TODO: Refactor this code
                     var isPlayer = EntityManager.HasComponent<Player>(entity);
                     var isEnemy = EntityManager.HasComponent<Enemy>(entity);
-
-                    if (isPlayer)
-                        EventManager.TriggerPlayerDeath();
-                    if (isEnemy)
-                    {
-                        var score = EntityManager.GetComponent<ScoreValue>(entity);
-                        EventManager.TriggerEnemyDeath(score.Value);
-                    }
 
                     string nameSprite = "Default_Explosion";
                     if (isPlayer)
@@ -38,10 +32,12 @@ namespace Galaga.Systems
                         nameSprite = "Enemy_Explosion";
 
                     entityExplosions.Add(entity, nameSprite);
+                    entityDeath.Add(entity);
                     EntityManager.AddComponent(entity, new DestroyTag());
                 }
             }
 
+            HandleEntitiesDeath();
             CreateEntityExplosions();
 
             var destroyTags = EntityManager.GetEntitiesWith<DestroyTag>();
@@ -76,6 +72,24 @@ namespace Galaga.Systems
                 EntityManager.AddComponent(explosion, sprite);
             }
             entityExplosions.Clear();
+        }
+        private void HandleEntitiesDeath()
+        {
+            foreach (var entity in entityDeath)
+            {
+                var isPlayer = EntityManager.HasComponent<Player>(entity);
+                var isEnemy = EntityManager.HasComponent<Enemy>(entity);
+
+                if (isPlayer)
+                    EventManager.TriggerPlayerDeath();
+                if (isEnemy)
+                {
+                    var score = EntityManager.GetComponent<ScoreValue>(entity);
+                    EventManager.TriggerEnemyDeath(score.Value);
+                }
+            }
+
+            entityDeath.Clear();
         }
     }
 }
