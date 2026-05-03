@@ -17,6 +17,7 @@ namespace Galaga
         private SpriteAtlas _spriteAtlas;
         private readonly SystemsManager _systemsManager;
         private readonly AudioManager _audioManager;
+        private LevelManager _levelManager;
 
         private RenderSystem _renderSystem;
 
@@ -38,7 +39,7 @@ namespace Galaga
             _spriteAtlas = new SpriteAtlas(Content, "Content/galaga_atlas.json");
 
             _systemsManager.RegisterSystem(new PlayerControlSystem(_graphics));
-            _systemsManager.RegisterSystem(new EnemyAISystem(_graphics));
+            _systemsManager.RegisterSystem(new EnemyAISystem(_spriteAtlas, _graphics));
             _systemsManager.RegisterSystem(new MovementSystem());
             _systemsManager.RegisterSystem(new CollisionSystem());
             _systemsManager.RegisterSystem(new BulletSystem(_graphics));
@@ -48,6 +49,9 @@ namespace Galaga
             var bulletFactory = new BulletFactory(_entityManager, _spriteAtlas);
             _ = new BulletManager(bulletFactory);
             _ = new HitsManager(_entityManager);
+
+            EnemyFactory enemyFactory = new(_entityManager, _spriteAtlas);
+            _levelManager = new LevelManager(enemyFactory);
 
             base.Initialize();
         }
@@ -64,9 +68,7 @@ namespace Galaga
 
             EntityFactory ef = new(_entityManager, _spriteAtlas);
             ef.CreatePlayer(new Vector2(400, 700));
-            EnemyFactory enemyFactory = new(_entityManager, _spriteAtlas);
-            enemyFactory.CreateButterfly(new Vector2(200, 100), []);
-            enemyFactory.CreateButterfly(new Vector2(250, 100), []);
+            _levelManager.StartNextWave();
         }
 
         protected override void Update(GameTime gameTime)
