@@ -1,13 +1,12 @@
 ﻿using Galaga.Components;
 using Galaga.Core.ECS;
 using Galaga.Interfaces;
+using Galaga.Managers;
 using Microsoft.Xna.Framework;
-using System;
-using System.Linq;
 
 namespace Galaga.Systems
 {
-    public class EnemyAISystem(GraphicsDeviceManager gdm) : ISystem
+    public class EnemyAISystem(SpriteAtlas spriteAtlas, GraphicsDeviceManager gdm) : ISystem
     {
         private readonly float screenWidth = gdm.PreferredBackBufferWidth;
 
@@ -23,7 +22,7 @@ namespace Galaga.Systems
                 switch (stateData.State)
                 {
                     case EnemyState.Entering:
-                        HandleEnteringState(enemy, stateData, deltaTime);
+                        HandleEnteringState(enemy, deltaTime);
                         break;
                     case EnemyState.InFormation:
                         ChangeEnemyDirection(enemy, transform);
@@ -34,26 +33,42 @@ namespace Galaga.Systems
                         break;
                 }
 
-                EntityManager.AddComponent(enemy, stateData);
+                //EntityManager.AddComponent(enemy, stateData);
             }
         }
 
-        private void HandleEnteringState(uint enemy, EnemyStateData stateData, float deltaTime)
+        private void HandleEnteringState(uint enemy, float deltaTime)
         {
+            var stateData = EntityManager.GetComponent<EnemyStateData>(enemy);
+            var transform = EntityManager.GetComponent<Transform>(enemy);
             stateData.Progress += deltaTime;
 
             var time = stateData.Progress / stateData.DurationInState;
             if (time >= 1)
             {
+                string nameSprite = "";
+                // TODO: Is Boos? or Boss?
+                if (EntityManager.HasComponent<Butterfly>(enemy))
+                    nameSprite = "Enemy_Butterfly_Rotation";
+                else if (EntityManager.HasComponent<Bee>(enemy))
+                    nameSprite = "Enemy_Bee_Rotation";
+                else if (EntityManager.HasComponent<Boos>(enemy))
+                    nameSprite = "Enemy_Boos_Rotation";
+
+                var sprite = spriteAtlas.GetSprite(nameSprite);
+                sprite.TimePerFrame = 0.3f;
+
+                EntityManager.AddComponent(enemy, sprite);
                 stateData.State = EnemyState.InFormation;
+                EntityManager.AddComponent(enemy, stateData);
                 return;
             }
 
             var Bezier = DeCasteljau(stateData.PointsControl, time);
-            EntityManager.AddComponent(enemy, new Transform
-            {
-                Position = Bezier
-            });
+            transform.Position = Bezier;
+            
+            EntityManager.AddComponent(enemy, transform);
+            EntityManager.AddComponent(enemy, stateData);
         }
 
         private void HandleInFormationState
