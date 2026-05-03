@@ -69,7 +69,7 @@ namespace Galaga.Factories
             entityManager.AddComponent(baseEnemy, new EnemyStateData
             {
                 Progress = 0,
-                State = EnemyState.InFormation,
+                State = EnemyState.Entering,
                 DurationInState = 3f,
                 PointsControl = pointsControl,
             });
