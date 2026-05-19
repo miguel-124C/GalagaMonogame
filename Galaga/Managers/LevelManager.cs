@@ -1,6 +1,7 @@
 ﻿using Galaga.Core.Events;
 using Galaga.Factories;
 using Galaga.Helpers;
+using Galaga.Interfaces;
 using Microsoft.Xna.Framework;
 using System.Linq;
 
@@ -40,23 +41,31 @@ namespace Galaga.Managers
             var butterflyPoints = Constants.PointsSubWaveOne.ToList().ElementAt(0).Points;
             var beePoints = Constants.PointsSubWaveOne.ToList().ElementAt(1).Points;
 
-            var gap = Constants.EnemiesGap;
-            var initialPositionY = -100;
+            var delaySpawn = 0.5f;
 
             for (int i = 0; i < amountButterfly; i++)
             {
-                _enemyFactory.CreateButterfly(
-                    new Vector2(200, initialPositionY),
-                    butterflyPoints
-                );
+                _enemyFactory.CreateButterfly(new EnemyProps
+                {
+                    Position = new Vector2(200, -100),
+                    PointsControl = butterflyPoints,
+                    Visible = i == 0,
+                    DelaySpawn = i * delaySpawn,
+                });
 
-                initialPositionY -= gap;
                 EnemiesAlive += 1;
             }
 
             for (int i = 0; i < amountBee; i++)
             {
-                _enemyFactory.CreateBee(new Vector2(400, -100), beePoints);
+                _enemyFactory.CreateBee(new EnemyProps
+                {
+                    Position = new Vector2(200, -100),
+                    PointsControl = beePoints,
+                    Visible = i == 0,
+                    DelaySpawn = i * delaySpawn,
+                });
+
                 EnemiesAlive += 1;
             }
         }

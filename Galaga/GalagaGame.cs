@@ -1,6 +1,7 @@
 ﻿using Galaga.Core.ECS;
 using Galaga.Factories;
 using Galaga.Managers;
+using Galaga.Helpers;
 using Galaga.Systems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,8 +28,8 @@ namespace Galaga
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            _graphics.PreferredBackBufferWidth = 1024;   // Ancho
-            _graphics.PreferredBackBufferHeight = 768;   // Alto
+            _graphics.PreferredBackBufferWidth = Constants.WidthScreen;   // Ancho
+            _graphics.PreferredBackBufferHeight = Constants.HeightScreen;   // Alto
             _systemsManager = new SystemsManager();
             _audioManager = new AudioManager("soundEffects");
         }
@@ -38,11 +39,11 @@ namespace Galaga
             _entityManager = new EntityManager();
             _spriteAtlas = new SpriteAtlas(Content, "Content/galaga_atlas.json");
 
-            _systemsManager.RegisterSystem(new PlayerControlSystem(_graphics));
-            _systemsManager.RegisterSystem(new EnemyAISystem(_spriteAtlas, _graphics));
+            _systemsManager.RegisterSystem(new PlayerControlSystem());
+            _systemsManager.RegisterSystem(new EnemyAISystem(_spriteAtlas));
             _systemsManager.RegisterSystem(new MovementSystem());
             _systemsManager.RegisterSystem(new CollisionSystem());
-            _systemsManager.RegisterSystem(new BulletSystem(_graphics));
+            _systemsManager.RegisterSystem(new BulletSystem());
             _systemsManager.RegisterSystem(new AnimationSystem());
             _systemsManager.RegisterSystem(new DeathSystem(_spriteAtlas));
 

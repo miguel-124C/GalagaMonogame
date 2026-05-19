@@ -11,5 +11,6 @@ namespace Galaga.Components
         public float Progress;            // Progreso del movimiento de entrada (0 a 1)
         public Vector2 PositionBeforeDiving; // Posición del enemigo antes de iniciar el dive
         public EnemyState State;          // Estado actual del enemigo
+        public float DelaySpawn;
     }
 }

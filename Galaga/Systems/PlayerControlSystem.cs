@@ -1,16 +1,15 @@
 ﻿using Galaga.Components;
 using Galaga.Core.ECS;
 using Galaga.Core.Events;
-using Microsoft.Xna.Framework;
+using Galaga.Helpers;
 using Microsoft.Xna.Framework.Input;
 using System.Linq;
 
 namespace Galaga.Systems
 {
-    public class PlayerControlSystem(GraphicsDeviceManager gdm)
+    public class PlayerControlSystem()
         : ISystem
     {
-        private readonly int WidthScreen = gdm.PreferredBackBufferWidth;
         private bool IsHitWallLeft = false;
         private bool IsHitWallRight = false;
 
@@ -35,9 +34,9 @@ namespace Galaga.Systems
                 IsHitWallLeft = true;
                 EntityManager.AddComponent(player, transform);
             }
-            else if (transform.Position.X + spriteWidth >= WidthScreen)
+            else if (transform.Position.X + spriteWidth >= Constants.WidthGame)
             {
-                transform.Position.X = WidthScreen - spriteWidth;
+                transform.Position.X = Constants.WidthGame - spriteWidth;
                 IsHitWallRight = true;
                 EntityManager.AddComponent(player, transform);
             }

@@ -11,19 +11,19 @@ namespace Galaga.Factories
         private readonly EntityManager entityManager = em;
         private readonly SpriteAtlas spriteAtlas = sa;
 
-        public uint CreateBoos(Vector2 positionInitial, Vector2[] pointsControl)
+        public uint CreateBoos(EnemyProps props)
         {
-            var boos = AssembleBaseEnemy(positionInitial, pointsControl, "Enemy_Boos_Green_Fly");
-            entityManager.AddComponent(boos, new Boos());
+            var boos = AssembleBaseEnemy(props, "Enemy_Boos_Green_Fly");
+            entityManager.AddComponent(boos, new Boss());
             entityManager.AddComponent(boos, new Health { Max = 2, Current = 2 });
             entityManager.AddComponent(boos, new ScoreValue { Value = 150 });
 
             return boos;
         }
 
-        public uint CreateBee(Vector2 position, Vector2[] pointsControl)
+        public uint CreateBee(EnemyProps props)
         {
-            var bee = AssembleBaseEnemy(position, pointsControl, "Enemy_Bee_Fly");
+            var bee = AssembleBaseEnemy(props, "Enemy_Bee_Fly");
             entityManager.AddComponent(bee, new Bee());
             entityManager.AddComponent(bee, new Health { Max = 1, Current = 1 });
             entityManager.AddComponent(bee, new ScoreValue { Value = 50 });
@@ -31,9 +31,9 @@ namespace Galaga.Factories
             return bee;
         }
 
-        public uint CreateButterfly(Vector2 position, Vector2[] pointsControl)
+        public uint CreateButterfly(EnemyProps props)
         {
-            var butterfly = AssembleBaseEnemy(position, pointsControl, "Enemy_Butterfly_Fly");
+            var butterfly = AssembleBaseEnemy(props, "Enemy_Butterfly_Fly");
             entityManager.AddComponent(butterfly, new Butterfly());
             entityManager.AddComponent(butterfly, new Health { Max = 1, Current = 1 });
             entityManager.AddComponent(butterfly, new ScoreValue { Value = 80 });
@@ -41,19 +41,20 @@ namespace Galaga.Factories
             return butterfly;
         }
 
-        private uint AssembleBaseEnemy(Vector2 position, Vector2[] pointsControl, string spriteName)
+        private uint AssembleBaseEnemy(EnemyProps props, string spriteName)
         {
             var baseEnemy = entityManager.CreateEntity();
             var scale = new Vector2(3f, 3f);
             entityManager.AddComponent(baseEnemy, new Transform
             {
-                Position = position,
+                Position = props.Position,
                 Rotation = 0f,
                 Scale = scale
             });
 
             var sprite = spriteAtlas.GetSprite(spriteName);
             sprite.TimePerFrame = 0.3f;
+            sprite.Visible = props.Visible;
 
             var offset = new Vector2(1, 1) * scale;
             var collider = new Collider
@@ -71,7 +72,8 @@ namespace Galaga.Factories
                 Progress = 0,
                 State = EnemyState.Entering,
                 DurationInState = 3f,
-                PointsControl = pointsControl,
+                PointsControl = props.PointsControl,
+                DelaySpawn = props.DelaySpawn,
             });
             entityManager.AddComponent(baseEnemy, new SwarmData {
                 Direction = EnemyDirection.Right

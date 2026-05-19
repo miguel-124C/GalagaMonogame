@@ -34,7 +34,8 @@ namespace Galaga.Managers
                     CurrentFrame = 0,
                     SpriteEffect = SpriteEffects.None,
                     TimeElapsed = 0f,
-                    GapPerFrame = spriteAtlas.Gap
+                    GapPerFrame = spriteAtlas.Gap,
+                    Visible = true,
                 };
             }
         }

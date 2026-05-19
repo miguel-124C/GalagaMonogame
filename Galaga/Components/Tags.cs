@@ -8,7 +8,7 @@ namespace Galaga.Components
     public struct Bullet          : IComponent { }
     public struct PlayerBullet    : IComponent { }
     public struct EnemyBullet     : IComponent { }
-    public struct Boos            : IComponent { }
+    public struct Boss            : IComponent { }
     public struct Bee             : IComponent { }
     public struct Butterfly       : IComponent { }
     public struct TractorBeam     : IComponent { }

@@ -1,13 +1,11 @@
 ﻿using Galaga.Core.ECS;
 using Galaga.Components;
-using Microsoft.Xna.Framework;
+using Galaga.Helpers;
 
 namespace Galaga.Systems
 {
-    internal class BulletSystem(GraphicsDeviceManager gdm) : ISystem
+    internal class BulletSystem() : ISystem
     {
-        private readonly int ScreenWidth = gdm.PreferredBackBufferWidth;
-        private readonly int ScreenHeight = gdm.PreferredBackBufferHeight;
         public override void Update(float deltaTime)
         {
             var bullets = EntityManager.GetEntitiesWith<Bullet>();
@@ -23,9 +21,9 @@ namespace Galaga.Systems
                 var position = transform.Position;
 
                 var isGetOutUp = position.Y + spriteHeight <= 0;
-                var isGetOutDown = position.Y - spriteHeight >= ScreenHeight;
+                var isGetOutDown = position.Y - spriteHeight >= Constants.HeightGame;
                 var isGetOutLeft = position.X + spriteWidth <= 0;
-                var isGetOutRight = position.X - spriteWidth >= ScreenWidth;
+                var isGetOutRight = position.X - spriteWidth >= Constants.WidthGame;
 
                 if (isGetOutUp || isGetOutDown || isGetOutLeft || isGetOutRight)
                     EntityManager.AddComponent(bullet, new DestroyTag());

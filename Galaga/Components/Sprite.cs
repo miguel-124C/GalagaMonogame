@@ -10,6 +10,7 @@ namespace Galaga.Components
         public Rectangle SourceRectangle;
         public SpriteEffects SpriteEffect;
         public Color Tint;
+        public bool Visible;
 
         public int CurrentFrame, TotalFrames;
         public float TimePerFrame, TimeElapsed, GapPerFrame;
