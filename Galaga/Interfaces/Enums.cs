@@ -7,7 +7,7 @@
 
     public enum EnemyState
     {
-        Entering, InFormation, Diving
+        Entering, Aligning, InFormation, InWaiting, Diving
     }
 
     public enum EnemyDirection

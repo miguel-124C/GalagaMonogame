@@ -26,6 +26,9 @@ namespace Galaga.Systems
                     continue;
 
                 var sprite = EntityManager.GetComponent<Sprite>(entity);
+                if (!sprite.Visible)
+                    continue;
+
                 var transform = EntityManager.GetComponent<Transform>(entity);
 
                 var spriteWidth = sprite.SourceRectangle.Width;

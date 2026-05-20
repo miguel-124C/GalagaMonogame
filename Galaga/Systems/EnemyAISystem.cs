@@ -1,15 +1,14 @@
 ﻿using Galaga.Components;
 using Galaga.Core.ECS;
+using Galaga.Helpers;
 using Galaga.Interfaces;
 using Galaga.Managers;
 using Microsoft.Xna.Framework;
 
 namespace Galaga.Systems
 {
-    public class EnemyAISystem(SpriteAtlas spriteAtlas, GraphicsDeviceManager gdm) : ISystem
+    public class EnemyAISystem(SpriteAtlas spriteAtlas) : ISystem
     {
-        private readonly float screenWidth = gdm.PreferredBackBufferWidth;
-
         public override void Update(float deltaTime)
         {
             var enemies = EntityManager.GetEntitiesWith<Enemy>();
@@ -39,35 +38,51 @@ namespace Galaga.Systems
 
         private void HandleEnteringState(uint enemy, float deltaTime)
         {
+            var spriteEnemy = EntityManager.GetComponent<Sprite>(enemy);
             var stateData = EntityManager.GetComponent<EnemyStateData>(enemy);
             var transform = EntityManager.GetComponent<Transform>(enemy);
+            
             stateData.Progress += deltaTime;
+            if (stateData.DelaySpawn > 0)
+            {
+                if (stateData.Progress < stateData.DelaySpawn)
+                {
+                    EntityManager.AddComponent(enemy, stateData);
+                } else if(stateData.Progress >= stateData.DelaySpawn)
+                {
+                    stateData.Progress = 0;
+                    stateData.DelaySpawn = 0;
+                    EntityManager.AddComponent(enemy, stateData);
+                }
+                return;
+            }
 
             var time = stateData.Progress / stateData.DurationInState;
             if (time >= 1)
             {
                 string nameSprite = "";
-                // TODO: Is Boos? or Boss?
                 if (EntityManager.HasComponent<Butterfly>(enemy))
                     nameSprite = "Enemy_Butterfly_Rotation";
                 else if (EntityManager.HasComponent<Bee>(enemy))
                     nameSprite = "Enemy_Bee_Rotation";
-                else if (EntityManager.HasComponent<Boos>(enemy))
+                else if (EntityManager.HasComponent<Boss>(enemy))
                     nameSprite = "Enemy_Boos_Rotation";
 
                 var sprite = spriteAtlas.GetSprite(nameSprite);
                 sprite.TimePerFrame = 0.3f;
 
-                EntityManager.AddComponent(enemy, sprite);
                 stateData.State = EnemyState.InFormation;
                 EntityManager.AddComponent(enemy, stateData);
+                EntityManager.AddComponent(enemy, sprite);
                 return;
             }
 
             var Bezier = DeCasteljau(stateData.PointsControl, time);
             transform.Position = Bezier;
-            
+            spriteEnemy.Visible = true;
+            EntityManager.AddComponent(enemy, spriteEnemy);
             EntityManager.AddComponent(enemy, transform);
+
             EntityManager.AddComponent(enemy, stateData);
         }
 
@@ -115,7 +130,7 @@ namespace Galaga.Systems
 
             if (transform.Position.X <= 0)
                 swarmData.Direction = EnemyDirection.Right;
-            else if (transform.Position.X + spriteWidth >= screenWidth)
+            else if (transform.Position.X + spriteWidth >= Constants.WidthGame)
                 swarmData.Direction = EnemyDirection.Left;
 
             var swarm = EntityManager.GetEntitiesWith<SwarmData>();
