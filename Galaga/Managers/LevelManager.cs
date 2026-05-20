@@ -40,7 +40,7 @@ namespace Galaga.Managers
             var butterflyPoints = Constants.PointsSubWaveOne.ToList().ElementAt(0).Points;
             var beePoints = Constants.PointsSubWaveOne.ToList().ElementAt(1).Points;
 
-            var gap = Constants.EnemiesGap;
+            var gap = Constants.EnemiesGap + 48;
             var initialPositionY = -100;
 
             for (int i = 0; i < amountButterfly; i++)
