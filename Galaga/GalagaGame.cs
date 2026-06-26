@@ -66,6 +66,7 @@ namespace Galaga
 
             _spriteAtlas.LoadJson();
             _audioManager.LoadSounds(Content);
+            WaveManager.LoadWavesJson();
 
             EntityFactory ef = new(_entityManager, _spriteAtlas);
             ef.CreatePlayer(new Vector2(400, 700));
