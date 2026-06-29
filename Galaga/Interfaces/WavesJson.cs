@@ -1,25 +1,33 @@
 ﻿
+using System.Text.Json.Serialization;
+
 namespace Galaga.Interfaces
 {
-    public partial struct WavesJson
+    public partial class WavesJson
     {
-        public Wave[] Waves;
+        [JsonPropertyName("waves")]
+        public Wave[] Waves {get; set;}
     }
 
-    public partial struct Wave
+    public partial class Wave
     {
-        public Subwave[] Subwaves;
+        [JsonPropertyName("subwaves")]
+        public Subwave[] Subwaves {get; set;}
     }
 
-    public partial struct Subwave
+    public partial class Subwave
     {
-        public EnemyPositionFinal[] Points;
-        public EnemyPositionFinal[] Enemies;
+        [JsonPropertyName("points")]
+        public EnemyPositionFinal[] Points {get; set;}
+        [JsonPropertyName("enemies")]
+        public EnemyPositionFinal[] Enemies {get; set;}
     }
 
-    public partial struct EnemyPositionFinal
+    public partial class EnemyPositionFinal
     {
-        public long X;
-        public long Y;
+        [JsonPropertyName("x")]
+        public long X {get; set;}
+        [JsonPropertyName("y")]
+        public long Y {get; set;}
     }
 }

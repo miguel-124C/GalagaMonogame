@@ -1,17 +1,13 @@
 ﻿using Galaga.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Galaga.Managers
 {
     public class WaveManager
     {
-        public static readonly List<Wave> Waves;
+        public static readonly List<Wave> Waves = [];
 
         public static void LoadWavesJson()
         {
